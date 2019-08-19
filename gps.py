@@ -1,7 +1,37 @@
-i=0
-with open('gps_20161101') as f:
-    for line1 in f:
-        i = i+1 # 每行末尾会有一个换行符
+import sys
 
-print (i)
-print (i*31*2)
+import matplotlib.pyplot as plt
+import pandas as pd
+
+sys.path.append(r"lib")
+from gps_util import calc_distance
+
+#gps = pd.read_csv('gps_20161101')
+#print(gps[0])
+def app():
+    i = 0
+    driverid = 'a'
+    gpslist = []
+    speed_list = []
+    with open('gps_20161101') as gps:
+        for line in gps:
+            i = i+1  # 每行末尾会有一个换行符
+            speed = pd.Series(line.strip('\n').split(','))
+            if i == 1:
+                driverid = speed[0]
+            if speed[0] != driverid:
+                break
+            else:
+                gpslist.append([(float)(speed[2]), (float)(speed[3]), (float)(speed[4])])
+
+    for index in range(len(gpslist)):
+        if index > 0:
+            distance = calc_distance(gpslist[index-1][1], gpslist[index-1][2], gpslist[index][1], gpslist[index][2])
+            speed = distance / (gpslist[index][0]-gpslist[index-1][0])
+            speed_list.append(speed*3.6)
+
+    print(speed_list)
+    x_axis = range(0, len(speed_list), 1)
+    plt.plot(x_axis, speed_list)
+    plt.show()
+app()
