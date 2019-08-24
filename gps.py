@@ -27,11 +27,13 @@ def app():
     for index in range(len(gpslist)):
         if index > 0:
             distance = calc_distance(gpslist[index-1][1], gpslist[index-1][2], gpslist[index][1], gpslist[index][2])
-            speed = distance / (gpslist[index][0]-gpslist[index-1][0])
-            speed_list.append(speed*3.6)
+            speed = distance / ((gpslist[index][0]-gpslist[index-1][0]) *  (gpslist[index][0]-gpslist[index-1][0]))
+            speed_list.append(speed)
 
     print(speed_list)
     x_axis = range(0, len(speed_list), 1)
     plt.plot(x_axis, speed_list)
+    plt.ylabel('Acceleration (m/s)')
+    plt.xlabel('Time (s)')
     plt.show()
 app()
