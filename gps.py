@@ -13,7 +13,7 @@ def app():
     driverid = 'a'
     gpslist = []
     speed_list = []
-    with open('gps_20161101') as gps:
+    with open('gps_20161103') as gps:
         for line in gps:
             i = i+1  # 每行末尾会有一个换行符
             speed = pd.Series(line.strip('\n').split(','))
@@ -27,13 +27,13 @@ def app():
     for index in range(len(gpslist)):
         if index > 0:
             distance = calc_distance(gpslist[index-1][1], gpslist[index-1][2], gpslist[index][1], gpslist[index][2])
-            speed = distance / ((gpslist[index][0]-gpslist[index-1][0]) *  (gpslist[index][0]-gpslist[index-1][0]))
+            speed = distance / (gpslist[index][0]-gpslist[index-1][0])
             speed_list.append(speed)
 
     print(speed_list)
     x_axis = range(0, len(speed_list), 1)
     plt.plot(x_axis, speed_list)
-    plt.ylabel('Acceleration (m/s)')
-    plt.xlabel('Time (s)')
+    plt.ylabel('速度 (m/s)', fontproperties='SimHei', fontsize=15)
+    plt.xlabel('时间 (s)', fontproperties='SimHei', fontsize=15)
     plt.show()
 app()
