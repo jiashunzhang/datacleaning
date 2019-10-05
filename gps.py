@@ -1,8 +1,8 @@
 import sys
 
+import random
 import matplotlib.pyplot as plt
 import pandas as pd
-
 sys.path.append(r"lib")
 from gps_util import calc_distance
 
@@ -13,6 +13,7 @@ def app():
     driverid = 'a'
     gpslist = []
     speed_list = []
+    speed_list2 = []
     with open('gps_20161103') as gps:
         for line in gps:
             i = i+1  # 每行末尾会有一个换行符
@@ -29,10 +30,11 @@ def app():
             distance = calc_distance(gpslist[index-1][1], gpslist[index-1][2], gpslist[index][1], gpslist[index][2])
             speed = distance / (gpslist[index][0]-gpslist[index-1][0])
             speed_list.append(speed)
-
-    print(speed_list)
+            speed_list2.append(speed + 2 *random.random())
+            print(speed_list)
     x_axis = range(0, len(speed_list), 1)
-    plt.plot(x_axis, speed_list)
+    plt.plot(x_axis, speed_list, 'k-')
+    plt.plot(x_axis, speed_list2, 'k.')
     plt.ylabel('速度 (m/s)', fontproperties='SimHei', fontsize=15)
     plt.xlabel('时间 (s)', fontproperties='SimHei', fontsize=15)
     plt.show()
